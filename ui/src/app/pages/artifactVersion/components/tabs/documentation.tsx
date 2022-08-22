@@ -19,8 +19,10 @@ import React from "react";
 import "./documentation.css";
 import { PureComponent, PureComponentProps, PureComponentState } from "../../../../components";
 import { RedocStandalone } from "redoc";
+import AsyncApiComponent from "@asyncapi/react-component";
 import { ErrorTabContent } from "./errorTab";
 import { Services } from "src/services";
+import "@asyncapi/react-component/lib/styles/fiori.css";
 
 
 /**
@@ -59,6 +61,10 @@ export class DocumentationTabContent extends PureComponent<DocumentationTabConte
         let visualizer: React.ReactElement | null = null;
         if (this.props.artifactType === "OPENAPI") {
             visualizer = <RedocStandalone spec={this.state.parsedContent} />;
+        }
+
+        if (this.props.artifactType === "ASYNCAPI") {
+            visualizer = <AsyncApiComponent schema={this.state.parsedContent} />
         }
 
         if (visualizer !== null) {

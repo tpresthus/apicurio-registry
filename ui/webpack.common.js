@@ -8,6 +8,7 @@ delete dependencies.serve; // Needed for nodeshift bug
 const webpack = require("webpack");
 const ChunkMapper = require("@redhat-cloud-services/frontend-components-config/chunk-mapper");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
 const isPatternflyStyles = (stylesheet) => stylesheet.includes("@patternfly/react-styles/css/") || stylesheet.includes("@patternfly/react-core/");
 
@@ -139,7 +140,8 @@ module.exports = (env, argv) => {
             requiredVersion: dependencies["react-router-dom"],
           },
         }
-      })
+      }),
+      new NodePolyfillPlugin()
     ],
     resolve: {
       extensions: [".js", ".ts", ".tsx", ".jsx"],
@@ -149,7 +151,13 @@ module.exports = (env, argv) => {
         })
       ],
       fallback: {
-        tty: require.resolve("tty-browserify")
+        tty: require.resolve("tty-browserify")/*,
+        http: require.resolve("stream-http"),
+        https: require.resolve("https-browserify"),
+        path: require.resolve("path-browserify"),
+        stream: require.resolve("stream-browserify"),
+        zlib: require.resolve("browserify-zlib"),
+        process: "process/browser",*/
       },
       symlinks: false,
       cacheWithContext: false
